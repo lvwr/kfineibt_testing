@@ -1,0 +1,17 @@
+FineIBT kernel build. This is the way:
+
+- git clone git@github.com:lvwr/kfineibt_testing.git
+- cd kfineibt_testing
+- git clone git@github.com:lvwr/llvm-project.git
+- git clone git@github.com:lvwr/linux
+- mkdir build
+- cd build
+- cmake -G Ninja -DCMAKE_INSTALL_PREFIX=../install/ -DCMAKE_BUILD_TYPE=release -DLLVM_ENABLE_PROJECTS="clang;lld" ../llvm-project/llvm  (or whatever suits you)
+- ninja install #(or whatever suits you)
+- cd ../linux/
+- cp ../config ./.config
+- make CC=<path>/install/bin/clang HOSTCC=<path>/install/bin/clang LD=<path>/install/bin/ld.lld LLVM=1 -j<X>
+- ... make modules and make install and whatever you need to install the new kernel.
+-
+- insmod <path>/fineibt_test.ko
+- dmesg | grep FineIBT (should show a violation).
